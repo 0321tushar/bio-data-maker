@@ -2,9 +2,7 @@
   "name": "royal-bio-data-maker",
   "version": "1.0.0",
   "description": "Royal Indian Biodata Maker with Dual PDF Export (Admin Full & User Selective View)",
-  "main": "server.js",
   "scripts": {
-    "build": "echo 'Static build ready for Vercel'",
     "start": "node server.js",
     "dev": "node server.js"
   },
@@ -16,10 +14,5 @@
     "vercel"
   ],
   "author": "Antigravity",
-  "license": "MIT",
-  "dependencies": {
-    "html2pdf.js": "^0.10.3",
-    "lucide": "^1.16.0",
-    "pdfjs-dist": "^3.11.174"
-  }
+  "license": "MIT"
 }
