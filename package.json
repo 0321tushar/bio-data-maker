@@ -4,6 +4,7 @@
   "description": "Royal Indian Biodata Maker with Dual PDF Export (Admin Full & User Selective View)",
   "main": "server.js",
   "scripts": {
+    "build": "echo 'Static build ready for Vercel'",
     "start": "node server.js",
     "dev": "node server.js"
   },
@@ -11,7 +12,8 @@
     "biodata",
     "marriage-biodata",
     "pdf-generator",
-    "admin-user-dual-view"
+    "admin-user-dual-view",
+    "vercel"
   ],
   "author": "Antigravity",
   "license": "MIT",

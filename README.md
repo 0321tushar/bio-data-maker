@@ -4,6 +4,19 @@ Ek ultra-attractive aur modern **Biodata Maker** jo marriage aur professional pr
 
 ---
 
+## ⚡ 1-Click Vercel Deployment (Live on Internet)
+
+Aap is project ko Vercel par bina kisi configuration ke deploy kar sakte hain:
+
+1. [Vercel Dashboard](https://vercel.com/dashboard) par jayein aur login karein.
+2. **"Add New..."** -> **"Project"** par click karein.
+3. Apna GitHub repo select karein: `0321tushar/bio-data-maker`
+4. Framework Preset me **Other** ya **Static** choose karein (ya default rehne dein, `vercel.json` already configured hai).
+5. **Deploy** button par click karein!
+6. 30 seconds me aapki application live URL (jaise `https://bio-data-maker-xxxx.vercel.app`) par live ho jayegi!
+
+---
+
 ## 🌟 Key Features & The "Twist"
 
 ### 1. 👑 Admin View (Full Details)
@@ -39,9 +52,9 @@ Ek ultra-attractive aur modern **Biodata Maker** jo marriage aur professional pr
 
 ---
 
-## 🚀 How to Run (Kaise Chalayein)
+## 🚀 How to Run Locally (Localhost)
 
-Aap do aasan tareeko se isko chala sakte hain:
+Aap aasan tareeko se isko locally chala sakte hain:
 
 ### Option 1: 1-Click Batch File (Sabse Aasan)
 - Sirf `Start_BioData_Maker.bat` file par **double-click** karein.
