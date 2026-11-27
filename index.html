@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Matrimonial Profile - Dual View (Admin & User PDF)</title>
+  
+  <!-- Google Fonts: Playfair Display & Cinzel for Luxury Serif, Plus Jakarta Sans for crisp modern text -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Core App Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/print.css">
+
+  <!-- Offline / Local html2pdf bundle -->
+  <script src="vendor/html2pdf.bundle.min.js"></script>
+  <!-- Mozilla pdf.js for reading incoming PDFs -->
+  <script src="vendor/pdf.min.js"></script>
+</head>
+<body>
+
+  <!-- =========================================================
+       APP TOP BAR / HEADER
+       ========================================================= -->
+  <header class="app-header">
+    <div class="brand-section">
+      <div class="brand-logo-icon">📄</div>
+      <div class="brand-info">
+        <h1>Matrimonial Profile Maker</h1>
+        <p>Dual PDF Engine: Admin (Full Details) &amp; User (Custom Selective)</p>
+      </div>
+    </div>
+
+    <!-- Header Actions -->
+    <div class="header-actions">
+      <button class="btn btn-import btn-sm" id="btnOpenPdfImporter" title="Insert / Import Biodata PDF from another user">
+        📥 Insert Other User's PDF
+      </button>
+      <button class="btn btn-secondary btn-sm" id="btnLoadSample" title="Load Kanak Bagga sample data">
+        ✨ Load Sample
+      </button>
+      <button class="btn btn-secondary btn-sm" id="btnClearAll" title="Clear all fields">
+        🗑️ Clear
+      </button>
+
+      <!-- Admin PDF Download -->
+      <button class="btn btn-admin" id="btnDownloadAdmin" title="Download PDF with ALL entered details">
+        👑 Download Admin PDF
+      </button>
+
+      <!-- User PDF Download -->
+      <button class="btn btn-user" id="btnDownloadUser" title="Download PDF with ONLY selected user details">
+        👥 Download User PDF
+      </button>
+
+      <!-- Print System Dialog -->
+      <button class="btn btn-secondary btn-sm" id="btnPrintUser" title="Print User version via system printer">
+        🖨️ Print User
+      </button>
+      <button class="btn btn-secondary btn-sm" id="btnPrintAdmin" title="Print Admin version via system printer">
+        🖨️ Print Admin
+      </button>
+    </div>
+  </header>
+
+  <!-- =========================================================
+       MAIN TWO-COLUMN WORKSPACE
+       ========================================================= -->
+  <main class="main-layout">
+    
+    <!-- LEFT COLUMN: FORM EDITOR & VISIBILITY TOGGLES -->
+    <div class="editor-column">
+      
+      <!-- Feature Banner -->
+      <div class="editor-banner">
+        <div class="editor-banner-icon">🎯</div>
+        <div class="editor-banner-text">
+          <h3>Dual View System (Admin vs User PDF)</h3>
+          <p>
+            Har field ke samne <strong>"In User PDF"</strong> ka toggle switch hai. 
+            Jo jo details aap user ko dikhana chahte hain unhe checked rakhein. 
+            <strong>Admin PDF</strong> me hamesha saari details aayengi, aur <strong>User PDF</strong> me sirf wahi jo aapne select ki hain!
+          </p>
+        </div>
+      </div>
+
+      <!-- Quick Privacy Presets -->
+      <div class="presets-card">
+        <div class="presets-card-title">
+          <span>⚡ One-Click Privacy Presets</span>
+          <span id="activeFieldsCounter" style="font-weight: 500; text-transform: none; color: #4b5563;"></span>
+        </div>
+        <div class="presets-btn-group">
+          <button class="preset-chip" id="presetHideSensitive" title="Unchecks Income, exact address, personal mobile, birth time">
+            🛡️ Hide Sensitive (Income, Address, Birth Time)
+          </button>
+          <button class="preset-chip" id="presetShowAll" title="Includes all fields in User PDF">
+            👁️ Show Everything in User View
+          </button>
+          <button class="preset-chip" id="presetEssential" title="Shows only core matrimonial basics">
+            🔒 Basic Matrimonial Only
+          </button>
+        </div>
+      </div>
+
+      <!-- SECTION 1: HEADER & PROFILE SUMMARY -->
+      <!-- SECTION 1: HEADER & CANDIDATE DETAILS -->
+      <div class="form-section open">
+        <div class="form-section-header">
+          <div class="section-header-left">
+            <span class="section-icon">👤</span>
+            <span class="section-title">Profile Header &amp; Candidate Details</span>
+          </div>
+          <span class="chevron-icon">▼</span>
+        </div>
+        <div class="form-section-body">
+          <div class="field-grid">
+
+            <div class="field-item">
+              <label class="field-label" for="input_header_category">Header Tag / Category</label>
+              <input type="text" class="form-input" id="input_header_category" placeholder="e.g. MATRIMONIAL PROFILE">
+            </div>
+
+            <div class="field-item">
+              <label class="field-label" for="input_header_fullName">Candidate Full Name</label>
+              <input type="text" class="form-input" id="input_header_fullName" placeholder="e.g. Kanak Bagga" style="font-weight: 700; font-size: 14px;">
+            </div>
+
+            <div class="field-item">
+              <label class="field-label" for="input_header_headline">Headline / Current Role &amp; Client</label>
+              <input type="text" class="form-input" id="input_header_headline" placeholder="e.g. Consultant @Acquco • Remote work for US Client">
+            </div>
+
+            <div class="field-item">
+              <label class="field-label" for="input_header_subHeadline">Education Tagline &amp; University</label>
+              <input type="text" class="form-input" id="input_header_subHeadline" placeholder="e.g. B.Tech, Computer Science & Eng — PEC University of Technology">
+            </div>
+
+            <!-- Email Address -->
+            <div class="field-item">
+              <div class="field-header-row">
+                <label class="field-label" for="input_header_email">Mail Address</label>
+                <label class="visibility-toggle-label checked">
+                  <input type="checkbox" id="toggle_header_email" checked>
+                  <span>In User PDF</span>
+                </label>
+              </div>
+              <input type="email" class="form-input" id="input_header_email" placeholder="e.g. kanakbagga1@gmail.com">
+            </div>
+
+            <!-- Phone Number -->
+            <div class="field-item">
+              <div class="field-header-row">
+                <label class="field-label" for="input_header_phone">Phone Number</label>
+                <label class="visibility-toggle-label checked">
+                  <input type="checkbox" id="toggle_header_phone" checked>
+                  <span>In User PDF</span>
+                </label>
+              </div>
+              <input type="text" class="form-input" id="input_header_phone" placeholder="e.g. +91-9803982585">
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 2: ABOUT MYSELF -->
+      <div class="form-section open">
+        <div class="form-section-header">
+          <div class="section-header-left">
+            <span class="section-icon">📋</span>
+            <span class="section-title">About Myself</span>
+          </div>
+          <div class="section-header-actions">
+            <span class="section-bulk-toggle" data-section="aboutMyself">Toggle All</span>
+            <span class="chevron-icon">▼</span>
+          </div>
+        </div>
+        <div class="form-section-body">
+          <div class="field-grid" id="aboutMyselfList">
+            <!-- Rendered by JS -->
+          </div>
+
+          <!-- Add New About Myself Item -->
+          <div style="background: #f9fafb; border: 1px dashed #d1d5db; padding: 10px; border-radius: 6px; margin-top: 10px;">
+            <div style="font-size: 11.5px; font-weight: 700; margin-bottom: 6px; color: #4b5563;">+ Add New Item to About Myself</div>
+            <div style="display: grid; grid-template-columns: 140px 1fr auto; gap: 6px; align-items: center;">
+              <input type="text" class="form-input" id="newAboutMyselfLabel" placeholder="Label (e.g. Complexion)">
+              <input type="text" class="form-input" id="newAboutMyselfValue" placeholder="Value (e.g. Fair)">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <label class="visibility-toggle-label checked" title="In User PDF">
+                  <input type="checkbox" id="newAboutMyselfShowInUser" checked>
+                  <span>User</span>
+                </label>
+                <button type="button" class="btn btn-secondary btn-sm" id="btnAddAboutMyself">Add</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 3: HOROSCOPE & BELIEFS -->
+      <div class="form-section open">
+        <div class="form-section-header">
+          <div class="section-header-left">
+            <span class="section-icon">🪐</span>
+            <span class="section-title">Horoscope &amp; Beliefs</span>
+          </div>
+          <div class="section-header-actions">
+            <span class="section-bulk-toggle" data-section="horoscope">Toggle All</span>
+            <span class="chevron-icon">▼</span>
+          </div>
+        </div>
+        <div class="form-section-body">
+          <div class="field-grid" id="horoscopeList">
+            <!-- Rendered by JS -->
+          </div>
+
+          <!-- Add New Horoscope Item -->
+          <div style="background: #f9fafb; border: 1px dashed #d1d5db; padding: 10px; border-radius: 6px; margin-top: 10px;">
+            <div style="font-size: 11.5px; font-weight: 700; margin-bottom: 6px; color: #4b5563;">+ Add New Item to Horoscope &amp; Beliefs</div>
+            <div style="display: grid; grid-template-columns: 140px 1fr auto; gap: 6px; align-items: center;">
+              <input type="text" class="form-input" id="newHoroscopeLabel" placeholder="Label (e.g. Gotra / Rashi)">
+              <input type="text" class="form-input" id="newHoroscopeValue" placeholder="Value (e.g. Kashyap)">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <label class="visibility-toggle-label checked" title="In User PDF">
+                  <input type="checkbox" id="newHoroscopeShowInUser" checked>
+                  <span>User</span>
+                </label>
+                <button type="button" class="btn btn-secondary btn-sm" id="btnAddHoroscope">Add</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 4: ABOUT MY FAMILY (TABLE) -->
+      <div class="form-section open">
+        <div class="form-section-header">
+          <div class="section-header-left">
+            <span class="section-icon">👨‍👩‍👧‍👦</span>
+            <span class="section-title">About My Family (Table)</span>
+          </div>
+          <div class="section-header-actions">
+            <span class="section-bulk-toggle" data-section="family">Toggle All</span>
+            <span class="chevron-icon">▼</span>
+          </div>
+        </div>
+        <div class="form-section-body">
+          <div class="field-grid" id="familyMembersList">
+            <!-- Rendered by JS -->
+          </div>
+
+          <!-- Add New Family Member -->
+          <div style="background: #f9fafb; border: 1px dashed #d1d5db; padding: 10px; border-radius: 6px; margin-top: 10px;">
+            <div style="font-size: 11.5px; font-weight: 700; margin-bottom: 6px; color: #4b5563;">+ Add Family Member Row</div>
+            <div style="display: grid; grid-template-columns: 120px 150px 1fr auto; gap: 6px; align-items: center;">
+              <input type="text" class="form-input" id="newFamilyRelation" placeholder="Relation (e.g. Sister)">
+              <input type="text" class="form-input" id="newFamilyName" placeholder="Name">
+              <input type="text" class="form-input" id="newFamilyDetails" placeholder="Qualification & Occupation">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <label class="visibility-toggle-label checked" title="In User PDF">
+                  <input type="checkbox" id="newFamilyShowInUser" checked>
+                  <span>User</span>
+                </label>
+                <button type="button" class="btn btn-secondary btn-sm" id="btnAddFamilyMember">Add</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 5: LIFE VALUES -->
+      <div class="form-section open">
+        <div class="form-section-header">
+          <div class="section-header-left">
+            <span class="section-icon">✨</span>
+            <span class="section-title">Life Values (Bullet Points)</span>
+          </div>
+          <div class="section-header-actions">
+            <span class="section-bulk-toggle" data-section="lifeValues">Toggle All</span>
+            <span class="chevron-icon">▼</span>
+          </div>
+        </div>
+        <div class="form-section-body">
+          <div class="field-grid" id="lifeValuesList">
+            <!-- Rendered by JS -->
+          </div>
+
+          <!-- Add Life Value Bullet -->
+          <div style="background: #f9fafb; border: 1px dashed #d1d5db; padding: 10px; border-radius: 6px; margin-top: 10px;">
+            <div style="display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center;">
+              <input type="text" class="form-input" id="newLifeValueText" placeholder="Enter bullet point (e.g. Empathetic, Disciplined, and Growth Mindset)">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <label class="visibility-toggle-label checked">
+                  <input type="checkbox" id="newLifeValueShowInUser" checked>
+                  <span>User</span>
+                </label>
+                <button type="button" class="btn btn-secondary btn-sm" id="btnAddLifeValue">Add</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 6: PARTNER PREFERENCES -->
+      <div class="form-section open">
+        <div class="form-section-header">
+          <div class="section-header-left">
+            <span class="section-icon">🤝</span>
+            <span class="section-title">Partner Preferences (Bullet Points)</span>
+          </div>
+          <div class="section-header-actions">
+            <span class="section-bulk-toggle" data-section="partnerPreferences">Toggle All</span>
+            <span class="chevron-icon">▼</span>
+          </div>
+        </div>
+        <div class="form-section-body">
+          <div class="field-grid" id="partnerPrefList">
+            <!-- Rendered by JS -->
+          </div>
+
+          <!-- Add Partner Pref Bullet -->
+          <div style="background: #f9fafb; border: 1px dashed #d1d5db; padding: 10px; border-radius: 6px; margin-top: 10px;">
+            <div style="display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center;">
+              <input type="text" class="form-input" id="newPartnerPrefText" placeholder="Enter preference bullet (e.g. Loving, Caring, and Supportive)">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <label class="visibility-toggle-label checked">
+                  <input type="checkbox" id="newPartnerPrefShowInUser" checked>
+                  <span>User</span>
+                </label>
+                <button type="button" class="btn btn-secondary btn-sm" id="btnAddPartnerPref">Add</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 7: ABOUT US / FAMILY WRITE-UP -->
+      <div class="form-section open">
+        <div class="form-section-header">
+          <div class="section-header-left">
+            <span class="section-icon">📝</span>
+            <span class="section-title">About Us (Candidate &amp; Family Note)</span>
+          </div>
+          <span class="chevron-icon">▼</span>
+        </div>
+        <div class="form-section-body">
+          <div class="field-grid">
+            <div class="field-item">
+              <div class="field-header-row">
+                <label class="field-label" for="input_aboutUs_title">Section Title</label>
+                <label class="visibility-toggle-label checked">
+                  <input type="checkbox" id="toggle_aboutUs_showInUser" checked>
+                  <span>In User PDF</span>
+                </label>
+              </div>
+              <input type="text" class="form-input" id="input_aboutUs_title" placeholder="e.g. ABOUT US or ABOUT CANDIDATE & FAMILY">
+            </div>
+
+            <div class="field-item">
+              <label class="field-label" for="input_aboutUs_text">About the Boy / Girl or Family Note</label>
+              <textarea class="form-textarea" id="input_aboutUs_text" rows="4" placeholder="Write a short summary about the candidate's nature, personality, ambitions, and family background..."></textarea>
+              <span class="field-help">Admin can describe personal qualities, family ethos, or specific expectations. Has 'In User PDF' privacy control.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 8: CANDIDATE PHOTOGRAPHS (3 PHOTOS AT BOTTOM) -->
+      <div class="form-section open">
+        <div class="form-section-header">
+          <div class="section-header-left">
+            <span class="section-icon">📷</span>
+            <span class="section-title">Candidate Photographs (3 Photos at Bottom)</span>
+          </div>
+          <span class="chevron-icon">▼</span>
+        </div>
+        <div class="form-section-body">
+          <div class="field-grid">
+            
+            <!-- Photo 1: Portrait / Main -->
+            <div class="field-item">
+              <div class="field-header-row">
+                <label class="field-label">Photo 1 (Portrait / Close-up)</label>
+                <label class="visibility-toggle-label checked">
+                  <input type="checkbox" id="toggle_photo_1_showInUser" checked>
+                  <span>In User PDF</span>
+                </label>
+              </div>
+              <div class="photo-uploader-box">
+                <div class="photo-preview-thumbnail" id="photoThumb_1">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </div>
+                <div class="photo-controls">
+                  <input type="file" id="fileInput_photo_1" accept="image/*" style="display: none;">
+                  <div class="photo-btn-row">
+                    <button type="button" class="btn btn-secondary btn-sm" id="uploadPhotoBtn_1">📷 Upload Photo 1</button>
+                    <button type="button" class="btn btn-sm btn-danger" id="removePhotoBtn_1" style="display: none;">✕ Remove</button>
+                  </div>
+                  <span class="field-help">Appears in bottom photo gallery slot 1.</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Photo 2: Full Length -->
+            <div class="field-item">
+              <div class="field-header-row">
+                <label class="field-label">Photo 2 (Full Length / Traditional)</label>
+                <label class="visibility-toggle-label checked">
+                  <input type="checkbox" id="toggle_photo_2_showInUser" checked>
+                  <span>In User PDF</span>
+                </label>
+              </div>
+              <div class="photo-uploader-box">
+                <div class="photo-preview-thumbnail" id="photoThumb_2">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </div>
+                <div class="photo-controls">
+                  <input type="file" id="fileInput_photo_2" accept="image/*" style="display: none;">
+                  <div class="photo-btn-row">
+                    <button type="button" class="btn btn-secondary btn-sm" id="uploadPhotoBtn_2">📷 Upload Photo 2</button>
+                    <button type="button" class="btn btn-sm btn-danger" id="removePhotoBtn_2" style="display: none;">✕ Remove</button>
+                  </div>
+                  <span class="field-help">Appears in bottom photo gallery slot 2.</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Photo 3: Casual / Modern -->
+            <div class="field-item">
+              <div class="field-header-row">
+                <label class="field-label">Photo 3 (Casual / Modern / Family)</label>
+                <label class="visibility-toggle-label checked">
+                  <input type="checkbox" id="toggle_photo_3_showInUser" checked>
+                  <span>In User PDF</span>
+                </label>
+              </div>
+              <div class="photo-uploader-box">
+                <div class="photo-preview-thumbnail" id="photoThumb_3">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </div>
+                <div class="photo-controls">
+                  <input type="file" id="fileInput_photo_3" accept="image/*" style="display: none;">
+                  <div class="photo-btn-row">
+                    <button type="button" class="btn btn-secondary btn-sm" id="uploadPhotoBtn_3">📷 Upload Photo 3</button>
+                    <button type="button" class="btn btn-sm btn-danger" id="removePhotoBtn_3" style="display: none;">✕ Remove</button>
+                  </div>
+                  <span class="field-help">Appears in bottom photo gallery slot 3.</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN: LIVE INTERACTIVE A4 PREVIEW -->
+    <div class="preview-column">
+      
+      <!-- Sticky Preview Header Bar -->
+      <div class="preview-toolbar">
+        
+        <!-- Dual View Switcher Tab (Admin vs User) -->
+        <div class="view-switcher-tabs">
+          <button class="view-tab active-admin" id="tabAdminView" title="Preview all entered details with privacy flags">
+            👑 Admin View (Full Details)
+          </button>
+          <button class="view-tab" id="tabUserView" title="Preview strictly the fields selected for User PDF">
+            👥 User View (Selective Details)
+          </button>
+        </div>
+
+        <!-- Realtime status indicator -->
+        <div class="preview-status-pill" id="previewStatusPill">
+          <span class="status-dot admin"></span>
+          <strong>ADMIN PREVIEW</strong> — Showing All Details + Red Privacy Flags
+        </div>
+
+        <!-- Zoom Engine -->
+        <div class="zoom-controls">
+          <button class="zoom-btn" id="zoomOutBtn" title="Zoom Out">−</button>
+          <button class="zoom-btn" id="zoomFitBtn" title="Reset Zoom" style="width: auto; padding: 0 8px; font-size: 11px;">100%</button>
+          <button class="zoom-btn" id="zoomInBtn" title="Zoom In">+</button>
+        </div>
+
+      </div>
+
+      <!-- Preview Canvas Area -->
+      <div class="preview-scroll-wrapper">
+        <div class="preview-center-box" id="previewCenterBox">
+          <!-- The Living A4 Sheet Element -->
+          <div class="biodata-sheet theme-emerald-modern" id="biodataSheet">
+            <!-- Rendered dynamically by app.js -->
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- PDF Generating Progress Modal -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner"></div>
+    <div style="font-size: 16px; font-weight: 700; letter-spacing: 0.5px;" id="loadingText">
+      Generating High Resolution PDF...
+    </div>
+    <div style="font-size: 12px; color: #d1d5db;">
+      Please wait while your document is formatted for A4 printing...
+    </div>
+  </div>
+
+  <!-- Modal for Inserting / Importing Other User's PDF -->
+  <div class="modal-overlay" id="pdfImporterModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span>📄</span> Insert Details from Another User's PDF
+        </div>
+        <button type="button" class="modal-close-btn" id="btnCloseImporterModal">✕</button>
+      </div>
+      <div class="modal-body">
+        <input type="file" id="importPdfFileInput" accept="application/pdf" style="display: none;">
+        
+        <div class="pdf-drop-zone" id="pdfDropZone">
+          <span class="pdf-drop-icon">📥</span>
+          <div class="pdf-drop-title">Select or Drag &amp; Drop Other User's PDF</div>
+          <div class="pdf-drop-subtitle">Automatically reads the PDF and extracts Name, DOB, Job, Family, and Contact details</div>
+        </div>
+
+        <div id="pdfImportStatusText" style="display: none; font-size: 12px; color: #2563eb; text-align: center; margin-top: 12px; font-weight: 600;"></div>
+
+        <!-- Extracted results preview & selector -->
+        <div id="pdfImportResultsContainer" style="display: none;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Scripts -->
+  <script src="js/sample-data.js"></script>
+  <script src="js/pdf-service.js"></script>
+  <script src="js/pdf-importer.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

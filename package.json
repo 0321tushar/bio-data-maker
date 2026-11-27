@@ -1,0 +1,23 @@
+{
+  "name": "royal-bio-data-maker",
+  "version": "1.0.0",
+  "description": "Royal Indian Biodata Maker with Dual PDF Export (Admin Full & User Selective View)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "biodata",
+    "marriage-biodata",
+    "pdf-generator",
+    "admin-user-dual-view"
+  ],
+  "author": "Antigravity",
+  "license": "MIT",
+  "dependencies": {
+    "html2pdf.js": "^0.10.3",
+    "lucide": "^1.16.0",
+    "pdfjs-dist": "^3.11.174"
+  }
+}

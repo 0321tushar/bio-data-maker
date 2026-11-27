@@ -1,0 +1,90 @@
+/* ==========================================================================
+   PRINT STYLESHEET
+   Flawless A4 vector printing & browser PDF saving for Executive Matrimonial Layout
+   ========================================================================== */
+
+@page {
+  size: A4 portrait;
+  margin: 0;
+}
+
+@media print {
+  html, body {
+    width: 210mm !important;
+    height: 297mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  /* Hide app interface elements */
+  .app-header,
+  .app-sidebar,
+  .editor-column,
+  .preview-toolbar,
+  .view-switcher-tabs,
+  .zoom-controls,
+  .toast-container,
+  .floating-action-bar,
+  .modal-backdrop,
+  .loading-overlay,
+  .admin-badge-indicator {
+    display: none !important;
+  }
+
+  .app-container,
+  .main-layout,
+  .preview-column,
+  .preview-scroll-wrapper,
+  .preview-center-box {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 210mm !important;
+    height: 297mm !important;
+    overflow: visible !important;
+    position: static !important;
+    background: transparent !important;
+    transform: none !important;
+  }
+
+  .biodata-sheet {
+    width: 210mm !important;
+    min-height: 297mm !important;
+    max-height: 297mm !important;
+    margin: 0 !important;
+    padding: 12mm 18mm 12mm 18mm !important;
+    box-shadow: none !important;
+    border: none !important;
+    box-sizing: border-box !important;
+    page-break-after: avoid !important;
+    page-break-before: avoid !important;
+    page-break-inside: avoid !important;
+    overflow: hidden !important;
+  }
+
+  .sheet-top-stripe {
+    margin-bottom: 16px !important;
+  }
+
+  .profile-header-container {
+    margin-bottom: 16px !important;
+  }
+
+  .family-table thead th {
+    background-color: #174338 !important;
+    color: #ffffff !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .details-table tr:nth-child(even),
+  .family-table tbody tr:nth-child(even) {
+    background-color: #faf8f2 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
