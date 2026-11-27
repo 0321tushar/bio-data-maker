@@ -67,9 +67,22 @@
   </header>
 
   <!-- =========================================================
+       MOBILE NAVIGATION TABS (Visible only on <= 992px)
+       ========================================================= -->
+  <nav class="mobile-nav-tabs" id="mobileNavTabs" aria-label="Mobile Navigation">
+    <button class="mobile-tab-btn active" id="btnMobileTabEditor" type="button">
+      <span class="m-tab-icon">✏️</span> Edit Details
+    </button>
+    <button class="mobile-tab-btn" id="btnMobileTabPreview" type="button">
+      <span class="m-tab-icon">👁️</span> Live Preview
+      <span class="mobile-live-indicator">LIVE</span>
+    </button>
+  </nav>
+
+  <!-- =========================================================
        MAIN TWO-COLUMN WORKSPACE
        ========================================================= -->
-  <main class="main-layout">
+  <main class="main-layout" id="mainLayout">
     
     <!-- LEFT COLUMN: FORM EDITOR & VISIBILITY TOGGLES -->
     <div class="editor-column">
@@ -544,6 +557,29 @@
 
   <!-- Toast Notification Container -->
   <div class="toast-container" id="toastContainer"></div>
+
+  <!-- =========================================================
+       MOBILE BOTTOM ACTION BAR (Sticky on mobile <= 992px)
+       ========================================================= -->
+  <aside class="mobile-bottom-bar" id="mobileBottomBar" aria-label="Mobile Quick Actions">
+    <button class="mobile-bottom-btn m-btn-view" id="btnMobileBottomToggleView" type="button">
+      <span class="m-b-icon">👁️</span>
+      <span class="m-b-label" id="mobileBottomToggleLabel">Preview</span>
+    </button>
+    <button class="mobile-bottom-btn m-btn-admin" id="btnMobileDownloadAdmin" type="button">
+      <span class="m-b-icon">👑</span>
+      <span class="m-b-label">Admin PDF</span>
+    </button>
+    <button class="mobile-bottom-btn m-btn-user" id="btnMobileDownloadUser" type="button">
+      <span class="m-b-icon">👥</span>
+      <span class="m-b-label">User PDF</span>
+    </button>
+  </aside>
+
+  <!-- Mobile Floating Preview Trigger Button -->
+  <button class="mobile-floating-preview-btn" id="btnMobileFloatingPreview" type="button" aria-label="Quick View Preview">
+    👁️ View Live Preview
+  </button>
 
   <!-- Scripts -->
   <script src="js/sample-data.js"></script>

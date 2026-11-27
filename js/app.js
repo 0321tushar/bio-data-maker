@@ -101,6 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
   populateFormFields();
   renderAllFormLists();
   renderBiodataPreview();
+  initMobileResponsiveView();
 });
 
 /* =========================================================
@@ -419,15 +420,22 @@ function setTheme(themeName) {
 }
 
 /* =========================================================
-   ZOOM ENGINE
+   ZOOM ENGINE (WITH MOBILE AUTO-SCALE SUPPORT)
    ========================================================= */
-function setZoom(val) {
-  val = Math.max(0.6, Math.min(1.4, Math.round(val * 10) / 10));
+function setZoom(val, isAutoFit = false) {
+  const minZoom = window.innerWidth <= 992 ? 0.35 : 0.6;
+  val = Math.max(minZoom, Math.min(1.5, Math.round(val * 100) / 100));
   appState.zoomLevel = val;
   const box = document.getElementById("previewCenterBox");
   const zoomFit = document.getElementById("zoomFitBtn");
   if (box) {
     box.style.transform = `scale(${val})`;
+    if (window.innerWidth <= 992 && val < 1.0) {
+      const naturalHeight = box.offsetHeight || 1123;
+      box.style.marginBottom = `-${Math.round(naturalHeight * (1 - val))}px`;
+    } else {
+      box.style.marginBottom = "0px";
+    }
   }
   if (zoomFit) {
     zoomFit.textContent = `${Math.round(val * 100)}%`;
@@ -1368,3 +1376,102 @@ function showToast(message, type = 'info') {
 
 window.showToast = showToast;
 window.renderBiodataPreview = renderBiodataPreview;
+
+/* =========================================================
+   MOBILE RESPONSIVE NAVIGATION & AUTO-FIT CONTROLLER
+   ========================================================= */
+let currentMobileTab = 'editor'; // 'editor' | 'preview'
+
+function initMobileResponsiveView() {
+  if (window.innerWidth <= 992) {
+    document.body.classList.add("mobile-view-editor");
+    document.body.classList.remove("mobile-view-preview");
+  }
+
+  const tabEditor = document.getElementById("btnMobileTabEditor");
+  const tabPreview = document.getElementById("btnMobileTabPreview");
+  const floatingPreviewBtn = document.getElementById("btnMobileFloatingPreview");
+  const bottomToggleBtn = document.getElementById("btnMobileBottomToggleView");
+  const bottomToggleLabel = document.getElementById("mobileBottomToggleLabel");
+
+  const mobileDownloadAdmin = document.getElementById("btnMobileDownloadAdmin");
+  const mobileDownloadUser = document.getElementById("btnMobileDownloadUser");
+
+  function switchMobileTab(mode) {
+    currentMobileTab = mode;
+    if (mode === "editor") {
+      document.body.classList.add("mobile-view-editor");
+      document.body.classList.remove("mobile-view-preview");
+      if (tabEditor) tabEditor.classList.add("active");
+      if (tabPreview) tabPreview.classList.remove("active");
+      if (bottomToggleLabel) bottomToggleLabel.textContent = "Preview";
+      if (bottomToggleBtn) {
+        const icon = bottomToggleBtn.querySelector(".m-b-icon");
+        if (icon) icon.textContent = "👁️";
+      }
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      document.body.classList.add("mobile-view-preview");
+      document.body.classList.remove("mobile-view-editor");
+      if (tabPreview) tabPreview.classList.add("active");
+      if (tabEditor) tabEditor.classList.remove("active");
+      if (bottomToggleLabel) bottomToggleLabel.textContent = "Editor";
+      if (bottomToggleBtn) {
+        const icon = bottomToggleBtn.querySelector(".m-b-icon");
+        if (icon) icon.textContent = "✏️";
+      }
+      autoFitMobilePreview();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }
+
+  if (tabEditor) tabEditor.addEventListener("click", () => switchMobileTab("editor"));
+  if (tabPreview) tabPreview.addEventListener("click", () => switchMobileTab("preview"));
+  if (floatingPreviewBtn) floatingPreviewBtn.addEventListener("click", () => switchMobileTab("preview"));
+  if (bottomToggleBtn) {
+    bottomToggleBtn.addEventListener("click", () => {
+      switchMobileTab(currentMobileTab === "editor" ? "preview" : "editor");
+    });
+  }
+
+  if (mobileDownloadAdmin) {
+    mobileDownloadAdmin.addEventListener("click", () => {
+      if (window.PDFService) window.PDFService.downloadPDF("admin");
+    });
+  }
+  if (mobileDownloadUser) {
+    mobileDownloadUser.addEventListener("click", () => {
+      if (window.PDFService) window.PDFService.downloadPDF("user");
+    });
+  }
+
+  window.addEventListener("resize", () => {
+    if (window.innerWidth <= 992) {
+      if (!document.body.classList.contains("mobile-view-editor") && !document.body.classList.contains("mobile-view-preview")) {
+        document.body.classList.add("mobile-view-editor");
+      }
+      if (currentMobileTab === "preview") {
+        autoFitMobilePreview();
+      }
+    } else {
+      document.body.classList.remove("mobile-view-editor", "mobile-view-preview");
+      setZoom(1.0);
+    }
+  });
+
+  if (window.innerWidth <= 992) {
+    autoFitMobilePreview();
+  }
+}
+
+function autoFitMobilePreview() {
+  if (window.innerWidth <= 992) {
+    const a4Width = 794;
+    const availableWidth = Math.max(300, window.innerWidth - 20);
+    const fitScale = Math.min(1.0, Math.max(0.35, Math.round((availableWidth / a4Width) * 100) / 100));
+    setZoom(fitScale, true);
+  }
+}
+
+window.initMobileResponsiveView = initMobileResponsiveView;
+window.autoFitMobilePreview = autoFitMobilePreview;
